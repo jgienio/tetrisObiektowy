@@ -14,7 +14,7 @@ namespace game {
         int lines_cleared; int cleared_total;
         int mult; int distance; int lvl;
     public:
-        float speed;
+        static float speed;
 
         score_count() {
             score_reset();
@@ -30,7 +30,7 @@ namespace game {
             speed = 1000.f;
         }
 
-        void update_score(scene::text* sidebar, char mode = 'n') {
+        void update_score(scene::text* sidebar, char mode = 'e') {
             int add_score = 0;
             cleared_total += lines_cleared;
             add_score += distance;
@@ -61,4 +61,5 @@ namespace game {
             */
         }
     };
+    float score_count::speed;
 }

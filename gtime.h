@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "./score.h"
+
 #include <string>
 
 namespace game{
@@ -14,7 +16,7 @@ namespace game{
             delta = dClock.restart();
         }
         int fall() {
-            if (sync > 1000) {
+            if (sync > score_count::speed) {
                 sync = 0;
                 return 1;
             }
