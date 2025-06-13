@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="consts.h" />
+    <ClInclude Include="gtime.h" />
     <ClInclude Include="logic.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />

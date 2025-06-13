@@ -293,6 +293,7 @@ namespace game {
 
 
 		void new_game() {
+			x = 3; y = 0;
 			for (int i = 0; i < 3; i++) { queue[i] = (rand() % 7) + 1; }
 			update_queue();
 			for (int x = 0; x < 10; x++) {

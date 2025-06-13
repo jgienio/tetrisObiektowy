@@ -7,6 +7,7 @@
 #include "./config.h"
 #include "./scene.h"
 #include "./window.h"
+#include "./gtime.h"
 
 
 int main()
@@ -22,7 +23,8 @@ int main()
             if (mwindow.menu.button_array[0].isPressed(mwindow.window)) { return 0; }
             if (mwindow.menu.button_array[1].isPressed(mwindow.window)) { mwindow.current_scene = 's'; }
             if (mwindow.menu.button_array[2].isPressed(mwindow.window)) {
-                mwindow.tetris.new_game();
+                time.reset();
+                mwindow.newgame();
                 mwindow.current_scene = 'g';
             }
             mwindow << mwindow.menu;
@@ -37,6 +39,7 @@ int main()
             mwindow << mwindow.settings;
             break;
         case 'g':
+            mwindow.uptime(time);
             mwindow.tetris.clear_falling();
             mwindow.windowEvent();
             if (time.fall()) { mwindow.fall(); }
