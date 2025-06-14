@@ -19,7 +19,7 @@ namespace game {
     public:
         sf::RenderWindow window;
         char current_scene;
-        scene menu, settings, game;
+        scene menu, settings, game, defeat;
         logic tetris;
         score_count points;
         int restart = 0;
@@ -74,6 +74,12 @@ namespace game {
             game.make_txt(30, xconst, yconst(9), "", 'l', 'p');
             game.make_txt(30, xconst, yconst(11), "", 'l', 'p');
 
+            defeat.id = 'l';
+            defeat.make_txt(80, 50, 10, "Przegrana :(", 'c');
+            defeat.make_btn(35, 50, 70, "Menu", 'c');
+            defeat.make_txt(25, 40, 33, "");
+            defeat.make_txt(35, 50, 25, "Statystyki", 'c');
+
             current_scene = start;
         }
         win() {
@@ -86,6 +92,7 @@ namespace game {
             menu.del();
             settings.del();
             game.del();
+            defeat.del();
             config::res_background();
             make('s');
             restart = 0;
@@ -129,14 +136,16 @@ namespace game {
                     else if (event.key.code == config::button_map[config::setbuttons].rotateL) { tetris.rotateLeft(); }
                     if (event.key.code == config::button_map[config::setbuttons].hold) { tetris.hold(); }
                     tetris.ghost_update();
-                    if (event.key.code == config::button_map[config::setbuttons].hardDrop) { tetris.drop(&points, &game, 2); }
+                    if (event.key.code == config::button_map[config::setbuttons].hardDrop) { 
+                        drop(2);
+                    }
                 }
             }
         }
 
         void fall() {
             if (!tetris.check_down_falling()) { tetris.y++; }
-            else { tetris.drop(&points, &game, 1); }
+            else { drop(1); }
         }
 
         void newgame() {
@@ -146,6 +155,13 @@ namespace game {
             game.text_array[7].update();
             points.score_reset();
             tetris.new_game();
+        }
+
+        void drop(int x) {
+            if (!tetris.drop(&points, &game, x)) { 
+                defeat.text_array[1].update(points.get(), 0);
+                current_scene = 'l'; 
+            }
         }
 
         void uptime(gtime t) {

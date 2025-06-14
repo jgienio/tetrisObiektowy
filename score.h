@@ -30,6 +30,10 @@ namespace game {
             speed = 1000.f;
         }
 
+        std::wstring get() {
+            return L"Punkty: " + std::to_wstring(x) + L"\nZbite linie: " + std::to_wstring(cleared_total) + L"\nPoziom: " + std::to_wstring(lvl);
+        }
+
         void update_score(scene::text* sidebar, char mode = 'e') {
             int add_score = 0;
             cleared_total += lines_cleared;

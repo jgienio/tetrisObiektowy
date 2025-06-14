@@ -47,7 +47,11 @@ int main()
             mwindow.tetris.insert_falling();
             mwindow << mwindow.game;
             break;
-
+        case 'l':
+            mwindow.windowEvent();
+            mwindow << mwindow.defeat;
+            if (mwindow.defeat.button_array[0].isPressed(mwindow.window)) { mwindow.current_scene = 'm'; }
+            break;
         }
         time.end();
     }

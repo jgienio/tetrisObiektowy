@@ -280,7 +280,8 @@ namespace game {
 		}
 
 
-		void drop(score_count* score, scene* s, int mult) {
+		int drop(score_count* score, scene* s, int mult) {
+			if (ghostY == 0) { return 0; }
 			score->distance = mult * (20 - y);
 			insert(bloc, x, ghostY);
 			y = 0;
@@ -290,6 +291,7 @@ namespace game {
 			update_queue();
 			ghost_update();
 			isHold = 0;
+			return 1;
 		}
 
 
