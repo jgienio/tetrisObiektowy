@@ -35,6 +35,7 @@ int main()
             for (int i = 0; i < N_RES; i++) { if (mwindow.settings.button_array[i + 1].isPressed(mwindow.window)) { mwindow.change_resolution(i); } }
             if (mwindow.settings.button_array[6].isPressed(mwindow.window)) { mwindow.reload(); }
             for (int i = 0; i < N_THEMES; i++) { if (mwindow.settings.button_array[i + 7].isPressed(mwindow.window)) { mwindow.change_theme(i); } }
+            for (int i = 0; i < N_BUTTONS; i++) { if (mwindow.settings.button_array[i + 11].isPressed(mwindow.window)) { mwindow.change_button_map(i); } }
             if (mwindow.settings.button_array[10].isPressed(mwindow.window)) { conf.save(); }
             mwindow << mwindow.settings;
             break;

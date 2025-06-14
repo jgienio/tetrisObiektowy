@@ -48,12 +48,16 @@ namespace game {
             settings.make_btn(20, 66, 36, "Mono");
             settings.make_btn(20, 66, 39, "Retro");
             settings.make_btn(35, 66, 85, "Zapisz");
+            settings.make_txt(35, 20, 50, "Klawisze");
+            settings.make_btn(20, 20, 58, "Strzalki");
+            settings.make_btn(20, 20, 61, "DFJK");
             for (int i = 0; i < N_RES; i++) {
                 if (config::get().res[i].isSet) { settings.button_array[i + 1].set(); }
             }
             for (int i = 0; i < N_THEMES; i++) {
                 if (config::get().themes[i].isSet) { settings.button_array[i + 7].set(); }
             }
+            settings.button_array[config::setbuttons + 11].set();
             settings.text_array[1].update(L"Rozdzielczoœæ", 0);
 
             game.id = 'g';
@@ -101,6 +105,14 @@ namespace game {
                 if (config::get().themes[i].isSet) { settings.button_array[i + 7].set(); }
                 else { settings.button_array[i + 7].unset(); }
             }
+        }
+
+        void change_button_map(int n) {
+            config::but_set(n);
+            for (int i = 0; i < N_BUTTONS; i++) {
+                settings.button_array[i + 11].unset();
+            }
+            settings.button_array[config::setbuttons + 11].set();
         }
 
         void windowEvent() {

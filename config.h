@@ -79,7 +79,7 @@ namespace game {
                 sf::Keyboard::LShift, sf::Keyboard::Space, sf::Keyboard::Escape, sf::Keyboard::LControl);
             button_map[1].create(sf::Keyboard::J, sf::Keyboard::K, sf::Keyboard::D, sf::Keyboard::F,
                 sf::Keyboard::L, sf::Keyboard::Space, sf::Keyboard::Escape, sf::Keyboard::S);
-            but_set(1);
+            but_set(current.but);
 
             bloc_size = SIZE_T * scale;
             shiftX = (res_w - BOARD_W * scale) / 2 + BORDER * scale;
@@ -142,6 +142,7 @@ namespace game {
         void save() {
             for (int i = 0; i < N_RES;i++) { if (res[i].isSet) { current.res = i; } }
             for (int i = 0; i < N_THEMES;i++) { if (themes[i].isSet) { current.thm = i; } }
+            current.but = setbuttons;
             std::fstream confile("./rsc/conf.bin", std::ios::binary | std::ios::out | std::ios::trunc);
             confile.write((char*)&current, sizeof(savable));
             confile.close();
