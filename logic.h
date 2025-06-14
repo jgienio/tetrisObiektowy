@@ -261,13 +261,13 @@ namespace game {
 			}
 		}
 
-		void hold(int r) {
+		void hold() {
 			if (!isHold) {
 				isHold = 1;
 				clear_falling();
 				if (held == 0) {
 					held = bloc.texture;
-					bloc = tetr[r];
+					bloc = tetr[(rand() % 7) + 1];
 				}
 				else {
 					int pom = held;
@@ -275,6 +275,7 @@ namespace game {
 					bloc = tetr[pom];
 				}
 				x = 3; y = 0;
+				queue[3] = held;
 			}
 		}
 

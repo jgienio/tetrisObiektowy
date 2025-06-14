@@ -111,6 +111,7 @@ namespace game {
                     else if (event.key.code == config::button_map[config::setbuttons].moveR) { tetris.moveRight(); }
                     if (event.key.code == config::button_map[config::setbuttons].rotateR) { tetris.rotateRight(); }
                     else if (event.key.code == config::button_map[config::setbuttons].rotateL) { tetris.rotateLeft(); }
+                    if (event.key.code == config::button_map[config::setbuttons].hold) { tetris.hold(); }
                     tetris.ghost_update();
                     if (event.key.code == config::button_map[config::setbuttons].hardDrop) { tetris.drop(&points, &game, 2); }
                 }
