@@ -54,6 +54,7 @@ namespace game {
             for (int i = 0; i < N_THEMES; i++) {
                 if (config::get().themes[i].isSet) { settings.button_array[i + 7].set(); }
             }
+            settings.text_array[1].update(L"Rozdzielczoœæ", 0);
 
             game.id = 'g';
             const int xconst = config::get().shiftX + config::get().bloc_size * 15 + BORDER * config::get().scale * 2;
@@ -65,6 +66,9 @@ namespace game {
             game.make_txt(30, xconst, yconst(5), "1", 'l', 'p');
             game.make_txt(20, xconst, yconst(6), "Linie:", 'l', 'p');
             game.make_txt(30, xconst, yconst(7), "0", 'l', 'p');
+            game.make_txt(20, xconst, yconst(8), "", 'l', 'p');
+            game.make_txt(30, xconst, yconst(9), "", 'l', 'p');
+            game.make_txt(30, xconst, yconst(11), "", 'l', 'p');
 
             current_scene = start;
         }
@@ -156,7 +160,6 @@ namespace game {
                         }
                     }
                 }
-                //tetris.queue[3] = tetris.held;
                 for (int q = 0; q < 4; q++) {
                     for (int i = 0; i < tetris.tetr[tetris.queue[q]].size; i++) {
                         for (int j = 0; j < tetris.tetr[tetris.queue[q]].size; j++) {

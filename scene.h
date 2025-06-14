@@ -39,9 +39,9 @@ namespace game {
                 sfml_Text.setString(std::to_string(x));
                 sfml_Text.setStyle(sf::Text::Bold);
             }
-            void update(std::string x) {
+            void update(std::wstring x, int isBold = 1) {
                 sfml_Text.setString(x);
-                sfml_Text.setStyle(sf::Text::Bold);
+                if (isBold) { sfml_Text.setStyle(sf::Text::Bold); }
             }
         };
         class button : public text {

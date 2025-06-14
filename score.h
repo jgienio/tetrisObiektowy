@@ -37,11 +37,11 @@ namespace game {
             int l = lvl;
             if (mode == 'e') { lvl = cleared_total / 10 + 1; }
             if (l != lvl) { speed *= 2.f / 3.f; }
-            std::string cleared_display = "";
-            if (lines_cleared == 1) { add_score += 100; cleared_display = "SINGLE"; }
-            if (lines_cleared == 2) { add_score += 300; cleared_display = "DOUBLE!"; }
-            if (lines_cleared == 3) { add_score += 500; cleared_display = "TRIPLE!!"; }
-            if (lines_cleared == 4) { add_score += 800; cleared_display = "TETRIS!!!"; }
+            std::wstring cleared_display = L"";
+            if (lines_cleared == 1) { add_score += 100; cleared_display = L"SINGLE"; }
+            if (lines_cleared == 2) { add_score += 300; cleared_display = L"DOUBLE!"; }
+            if (lines_cleared == 3) { add_score += 500; cleared_display = L"TRIPLE!!"; }
+            if (lines_cleared == 4) { add_score += 800; cleared_display = L"TETRIS!!!"; }
             if (lines_cleared != 0) { mult++; }
             else { mult = 0; }
             add_score += 50 * mult;
@@ -49,16 +49,15 @@ namespace game {
             sidebar[3].update(x);
             sidebar[5].update(lvl);
             sidebar[7].update(cleared_total);
-            /*if (mult > 1) {
-                sidebar[8].display().setString("Mno¿nik:");
-                sidebar[9].display().setString(std::to_string(mult) + 'x');
+            if (mult > 1) {
+                sidebar[8].update(L"Mno¿nik:", 0);
+                sidebar[9].update(std::to_wstring(mult) + L'x');
             }
             else {
-                sidebar[8].display().setString("");
-                sidebar[9].display().setString("");
+                sidebar[8].update(L"");
+                sidebar[9].update(L"");
             }
-            sidebar[11].display().setString(cleared_display);
-            */
+            sidebar[10].update(cleared_display);
         }
     };
     float score_count::speed;
