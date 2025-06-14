@@ -155,6 +155,21 @@ namespace game {
                         }
                     }
                 }
+                //tetris.queue[3] = tetris.held;
+                for (int q = 0; q < 4; q++) {
+                    for (int i = 0; i < tetris.tetr[tetris.queue[q]].size; i++) {
+                        for (int j = 0; j < tetris.tetr[tetris.queue[q]].size; j++) {
+                            if (tetris.tetr[tetris.queue[q]].shape[i + 4 * j] != 0) {
+                                sf::Sprite bloc;
+                                bloc.setPosition(float(i * config::bloc_size + config::shiftHoldX + config::bloc_size * (4 - tetris.tetr[tetris.queue[q]].size) / 2),
+                                    float(j * config::bloc_size + config::shiftHoldY + ((q + 1) % 4) * 5 * config::bloc_size) + config::bloc_size * (4 - tetris.tetr[tetris.queue[q]].size) / 2);
+                                bloc.setTexture(config::tetriminos[tetris.queue[q]]);
+                                bloc.scale(config::scale, config::scale);
+                                window.draw(bloc);
+                            }
+                        }
+                    }
+                }
             }
             for (int i = 0; i < disp.noTXT; i++) {
                 window.draw(disp.text_array[i].display());
