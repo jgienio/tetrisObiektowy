@@ -106,27 +106,13 @@ namespace game {
                 if (event.type == sf::Event::Resized) { window.setSize(sf::Vector2u(config::get().res_w, config::get().res_h)); }
                 if (event.type == sf::Event::KeyPressed && current_scene == 'g') {
                     tetris.clear_ghost();
-                    switch (event.key.code) {
-                    case sf::Keyboard::Escape:
-                        current_scene = 'm';
-                        break;
-                    case sf::Keyboard::Left:
-                        tetris.moveLeft();
-                        break;
-                    case sf::Keyboard::Right:
-                        tetris.moveRight();
-                        break;
-                    case sf::Keyboard::Up:
-                        tetris.rotateRight();
-                        break;
-                    case sf::Keyboard::Down:
-                        tetris.rotateLeft();
-                        break;
-                    }
+                    if (event.key.code == config::button_map[config::setbuttons].pause) { current_scene = 'm'; }
+                    if (event.key.code == config::button_map[config::setbuttons].moveL) { tetris.moveLeft(); }
+                    else if (event.key.code == config::button_map[config::setbuttons].moveR) { tetris.moveRight(); }
+                    if (event.key.code == config::button_map[config::setbuttons].rotateR) { tetris.rotateRight(); }
+                    else if (event.key.code == config::button_map[config::setbuttons].rotateL) { tetris.rotateLeft(); }
                     tetris.ghost_update();
-                    if (event.key.code == sf::Keyboard::Space) {
-                        tetris.drop(&points, &game, 2);
-                    }
+                    if (event.key.code == config::button_map[config::setbuttons].hardDrop) { tetris.drop(&points, &game, 2); }
                 }
             }
         }

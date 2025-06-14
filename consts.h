@@ -8,3 +8,4 @@
 #define SIZE_T 25
 #define N_RES 5
 #define N_THEMES 3
+#define N_BUTTONS 2

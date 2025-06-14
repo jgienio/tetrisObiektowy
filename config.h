@@ -27,9 +27,24 @@ namespace game {
                 path = p; isSet = 0;
             }
         };
+        class buttons {
+        public:
+            sf::Keyboard::Key moveL, moveR, rotateL, rotateR;
+            sf::Keyboard::Key softDrop, hardDrop, pause, hold;
+            int isSet = 0;
+            void create(sf::Keyboard::Key CmoveL, sf::Keyboard::Key CmoveR, 
+                        sf::Keyboard::Key CrotateL, sf::Keyboard::Key CrotateR,
+                        sf::Keyboard::Key CsoftDrop, sf::Keyboard::Key ChardDrop, 
+                        sf::Keyboard::Key Cpause, sf::Keyboard::Key Chold)
+            {
+                moveL = CmoveL; moveR = CmoveR; rotateL = CrotateL; rotateR = CrotateR;
+                softDrop = CsoftDrop; hardDrop = ChardDrop; pause = Cpause; hold = Chold;
+                isSet = 0;
+            }
+        };
         class savable {
         public:
-            int res; int thm;
+            int res; int thm; int but;
         };
     public:
         static int res_w, res_h;
@@ -43,7 +58,9 @@ namespace game {
         static sf::Sprite background, board;
         static resolution res[N_RES];
         static theme themes[N_THEMES];
+        static buttons button_map[N_BUTTONS];
         static std::string path;
+        static int setbuttons;
         savable current;
         void doc() {
             res[0].create(800, 600, 1.f);
@@ -57,6 +74,12 @@ namespace game {
             themes[1].create(0, 0, 0, 255, 0, 0, "mono");
             themes[2].create(15, 52, 15, 48, 95, 48, "retro");
             thm_set(current.thm);
+
+            button_map[0].create(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Down, sf::Keyboard::Up, 
+                sf::Keyboard::LShift, sf::Keyboard::Space, sf::Keyboard::Escape, sf::Keyboard::LControl);
+            button_map[1].create(sf::Keyboard::J, sf::Keyboard::K, sf::Keyboard::D, sf::Keyboard::F,
+                sf::Keyboard::L, sf::Keyboard::Space, sf::Keyboard::Escape, sf::Keyboard::S);
+            but_set(1);
 
             bloc_size = SIZE_T * scale;
             shiftX = (res_w - BOARD_W * scale) / 2 + BORDER * scale;
@@ -91,6 +114,11 @@ namespace game {
             txt_color = themes[n].text;
             btn_color = themes[n].button;
             path = themes[n].path;
+        }
+        static void but_set(int n) {
+            for (int i = 0; i < N_BUTTONS; i++) { button_map[i].isSet = 0; }
+            button_map[n].isSet;
+            setbuttons = n;
         }
         static void res_background() {
             bloc_size = SIZE_T * scale;
@@ -134,6 +162,7 @@ namespace game {
     float config::scale, config::bloc_size;
     config::resolution config::res[];
     config::theme config::themes[];
+    config::buttons config::button_map[]; int config::setbuttons;
     std::string config::path;
     sf::Texture config::tBGR, config::tBoard, config::tetriminos[8];
 };
