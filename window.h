@@ -7,6 +7,7 @@
 #include "./scene.h"
 #include "./logic.h"
 #include "./score.h"
+#include "./gtime.h"
 
 namespace game {
     class win {
@@ -57,13 +58,13 @@ namespace game {
             game.id = 'g';
             const int xconst = config::get().shiftX + config::get().bloc_size * 15 + BORDER * config::get().scale * 2;
             game.make_txt(20, xconst, yconst(0), "Czas:", 'l', 'p');
-            game.make_txt(30, xconst, yconst(1), "0", 'l', 'p', sf::Text::Bold);
+            game.make_txt(30, xconst, yconst(1), "0", 'l', 'p');
             game.make_txt(20, xconst, yconst(2), "Wynik:", 'l', 'p');
-            game.make_txt(30, xconst, yconst(3), "0", 'l', 'p', sf::Text::Bold);
+            game.make_txt(30, xconst, yconst(3), "0", 'l', 'p');
             game.make_txt(20, xconst, yconst(4), "Poziom:", 'l', 'p');
-            game.make_txt(30, xconst, yconst(5), "1", 'l', 'p', sf::Text::Bold);
+            game.make_txt(30, xconst, yconst(5), "1", 'l', 'p');
             game.make_txt(20, xconst, yconst(6), "Linie:", 'l', 'p');
-            game.make_txt(30, xconst, yconst(7), "0", 'l', 'p', sf::Text::Bold);
+            game.make_txt(30, xconst, yconst(7), "0", 'l', 'p');
 
             current_scene = start;
         }
@@ -135,6 +136,19 @@ namespace game {
             else { tetris.drop(&points, &game, 1); }
         }
 
+        void newgame() {
+            game.text_array[1].update();
+            game.text_array[3].update();
+            game.text_array[5].update(1);
+            game.text_array[7].update();
+            points.score_reset();
+            tetris.new_game();
+        }
+
+        void uptime(gtime t) {
+            game.text_array[1].update(t.read());
+        }
+
         void operator<<(const scene& disp) {
             window.clear();
             window.draw(config::get().background);
@@ -165,28 +179,4 @@ namespace game {
             window.display();
         }
     };
-
-    class gtime {
-    private:
-        sf::Clock dClock;
-        long int total = 0;
-        int sync = 0; int direction = 1;
-        sf::Time delta;
-    public:
-        void start() {
-            delta = dClock.restart();
-        }
-        int fall() {
-            if (sync > 300) {
-                sync = 0;
-                return 1;
-            }
-            return 0;
-        }
-        void end() {
-            total += delta.asMilliseconds() * direction;
-            sync += delta.asMilliseconds();
-        }
-    };
-
 };

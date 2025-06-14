@@ -21,13 +21,12 @@ namespace game {
                 sfml_Text.setPosition(0, 0);
                 sfml_Text.setString("content");
             }
-            void make(int size, int x, int y, char alignment, std::string content, sf::Text::Style style = sf::Text::Regular) {
+            void make(int size, int x, int y, char alignment, std::string content) {
                 sfml_Text.setFont(config::get().font);
                 sfml_Text.setFillColor(config::get().txt_color);
                 sfml_Text.setCharacterSize(size);
                 float shift = 0;
                 if (alignment == 'c') { shift = (size / FONT_CONST) * content.length() / 2; }
-                sfml_Text.setStyle(style);
                 sfml_Text.setPosition(x - shift, y);
                 sfml_Text.setString(content);
             }
@@ -35,6 +34,14 @@ namespace game {
             void visibility(int toggle) {
                 if (toggle == 0) { sfml_Text.setFillColor(sf::Color::Transparent); }
                 else { sfml_Text.setFillColor(config::txt_color); }
+            }
+            void update(int x = 0) {
+                sfml_Text.setString(std::to_string(x));
+                sfml_Text.setStyle(sf::Text::Bold);
+            }
+            void update(std::string x) {
+                sfml_Text.setString(x);
+                sfml_Text.setStyle(sf::Text::Bold);
             }
         };
         class button : public text {
@@ -80,14 +87,14 @@ namespace game {
             if (noBTN != 0) { delete[] button_array; }
             if (noTXT != 0) { delete[] text_array; }
         }
-        void make_txt(int size, float x, float y, std::string content, char alignment = 'l', char type = '%', sf::Text::Style style = sf::Text::Regular) {
+        void make_txt(int size, float x, float y, std::string content, char alignment = 'l', char type = '%') {
             text* new_array = new text[noTXT + 1];
             if (noTXT != 0) {
                 std::copy(text_array, text_array + noTXT, new_array);
                 delete[] text_array;
             }
             text_array = new_array;
-            if (type == '%') { text_array[noTXT].make(size * config::get().scale, x / 100 * config::get().res_w, y / 100 * config::get().res_h, alignment, content, style); }
+            if (type == '%') { text_array[noTXT].make(size * config::get().scale, x / 100 * config::get().res_w, y / 100 * config::get().res_h, alignment, content); }
             else { text_array[noTXT].make(size * config::get().scale, x, y, alignment, content); }
             noTXT++;
         }
