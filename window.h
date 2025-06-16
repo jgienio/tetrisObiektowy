@@ -12,7 +12,6 @@
 namespace game {
     class win {
     private:
-        int speedtemp = 0;
         int yconst(int i) {
             if (i % 2) { return config::shiftY + config::bloc_size * (4 + i) + 20 * config::scale; }
             return config::shiftY + config::bloc_size * (5 + i);
@@ -24,6 +23,7 @@ namespace game {
         logic tetris;
         score_count points;
         int restart = 0;
+        float speedtemp = score_count::speed;
         void make(char start) {
             window.create(sf::VideoMode(config::get().res_w, config::get().res_h), "Tetris Obiektowy");
             window.setFramerateLimit(60);
@@ -136,7 +136,7 @@ namespace game {
                     if (event.key.code == config::button_map[config::setbuttons].rotateR) { tetris.rotateRight(); }
                     else if (event.key.code == config::button_map[config::setbuttons].rotateL) { tetris.rotateLeft(); }
                     if (event.key.code == config::button_map[config::setbuttons].hold) { tetris.hold(); }
-                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { speedtemp = score_count::speed; score_count::speed /= 10; }
+                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { score_count::speed = speedtemp / 10; }
                     tetris.ghost_update();
                     if (event.key.code == config::button_map[config::setbuttons].hardDrop) { 
                         drop(2);
@@ -167,6 +167,7 @@ namespace game {
                 defeat.text_array[1].update(points.get(), 0);
                 current_scene = 'l'; 
             }
+            speedtemp = score_count::speed;
         }
 
         void uptime(gtime t) {

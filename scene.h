@@ -42,6 +42,7 @@ namespace game {
             void update(std::wstring x, int isBold = 1) {
                 sfml_Text.setString(x);
                 if (isBold) { sfml_Text.setStyle(sf::Text::Bold); }
+                else { sfml_Text.setStyle(sf::Text::Regular); }
             }
         };
         class button : public text {
