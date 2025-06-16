@@ -12,6 +12,7 @@
 namespace game {
     class win {
     private:
+        int speedtemp = 0;
         int yconst(int i) {
             if (i % 2) { return config::shiftY + config::bloc_size * (4 + i) + 20 * config::scale; }
             return config::shiftY + config::bloc_size * (5 + i);
@@ -135,10 +136,14 @@ namespace game {
                     if (event.key.code == config::button_map[config::setbuttons].rotateR) { tetris.rotateRight(); }
                     else if (event.key.code == config::button_map[config::setbuttons].rotateL) { tetris.rotateLeft(); }
                     if (event.key.code == config::button_map[config::setbuttons].hold) { tetris.hold(); }
+                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { speedtemp = score_count::speed; score_count::speed /= 10; }
                     tetris.ghost_update();
                     if (event.key.code == config::button_map[config::setbuttons].hardDrop) { 
                         drop(2);
                     }
+                }
+                if (event.type == sf::Event::KeyReleased && current_scene == 'g') {
+                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { score_count::speed = speedtemp; }
                 }
             }
         }
