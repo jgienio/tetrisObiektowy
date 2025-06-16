@@ -30,6 +30,7 @@ namespace game {
         int restart = 0;
         float speedtemp = score_count::speed;
         int mode;
+        int is_soft_dropping = 0;
         void make(char start) {
             window.create(sf::VideoMode(config::get().res_w, config::get().res_h), "Tetris Obiektowy");
             window.setFramerateLimit(60);
@@ -158,14 +159,14 @@ namespace game {
                     if (event.key.code == config::button_map[config::setbuttons].rotateR) { tetris.rotateRight(); }
                     else if (event.key.code == config::button_map[config::setbuttons].rotateL) { tetris.rotateLeft(); }
                     if (event.key.code == config::button_map[config::setbuttons].hold) { tetris.hold(); }
-                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { score_count::speed = speedtemp / 10; }
+                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { score_count::speed = speedtemp / 10; is_soft_dropping = 1; }
                     tetris.ghost_update();
                     if (event.key.code == config::button_map[config::setbuttons].hardDrop) { 
                         drop(2);
                     }
                 }
                 if (event.type == sf::Event::KeyReleased && current_scene == 'g') {
-                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { score_count::speed = speedtemp; }
+                    if (event.key.code == config::button_map[config::setbuttons].softDrop) { score_count::speed = speedtemp; is_soft_dropping = 0; }
                 }
                 if (current_scene == 's' && settings.button_array[15].isHovered(window)) {
                     std::wstring tmp = settings.button_array[15].display().getString();
@@ -208,7 +209,8 @@ namespace game {
                 defeat.text_array[1].update(points.get(), 0);
                 current_scene = 'l';
             }
-            speedtemp = score_count::speed;
+            if (!is_soft_dropping) { speedtemp = score_count::speed; }
+            else { speedtemp = score_count::speed * 10; }
         }
 
         void uptime(gtime t) {
