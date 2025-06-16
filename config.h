@@ -44,7 +44,7 @@ namespace game {
         };
         class savable {
         public:
-            int res; int thm; int but;
+            int res; int thm; int but; int ghs;
         };
     public:
         static int res_w, res_h;
@@ -61,6 +61,7 @@ namespace game {
         static buttons button_map[N_BUTTONS];
         static std::string path;
         static int setbuttons;
+        static int display_ghosts;
         savable current;
         void doc() {
             res[0].create(800, 600, 1.f);
@@ -80,6 +81,8 @@ namespace game {
             button_map[1].create(sf::Keyboard::J, sf::Keyboard::K, sf::Keyboard::D, sf::Keyboard::F,
                 sf::Keyboard::L, sf::Keyboard::Space, sf::Keyboard::Escape, sf::Keyboard::S);
             but_set(current.but);
+
+            display_ghosts = current.ghs; //ustaw 1 przy ³adowaniu
 
             bloc_size = SIZE_T * scale;
             shiftX = (res_w - BOARD_W * scale) / 2 + BORDER * scale;
@@ -143,6 +146,7 @@ namespace game {
             for (int i = 0; i < N_RES;i++) { if (res[i].isSet) { current.res = i; } }
             for (int i = 0; i < N_THEMES;i++) { if (themes[i].isSet) { current.thm = i; } }
             current.but = setbuttons;
+            current.ghs = display_ghosts;
             std::fstream confile("./rsc/conf.bin", std::ios::binary | std::ios::out | std::ios::trunc);
             confile.write((char*)&current, sizeof(savable));
             confile.close();
@@ -166,4 +170,5 @@ namespace game {
     config::buttons config::button_map[]; int config::setbuttons;
     std::string config::path;
     sf::Texture config::tBGR, config::tBoard, config::tetriminos[8];
+    int config::display_ghosts;
 };

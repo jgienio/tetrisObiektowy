@@ -55,12 +55,16 @@ namespace game {
             settings.make_txt(35, 20, 50, "Klawisze");
             settings.make_btn(20, 20, 58, "Strzalki");
             settings.make_btn(20, 20, 61, "DFJK");
+            settings.make_txt(35, 66, 45, "Duszki?");
+            settings.make_btn(20, 75, 53, "Nie");
+            settings.make_btn(20, 66, 53, "Tak");
             for (int i = 0; i < N_RES; i++) {
                 if (config::get().res[i].isSet) { settings.button_array[i + 1].set(); }
             }
             for (int i = 0; i < N_THEMES; i++) {
                 if (config::get().themes[i].isSet) { settings.button_array[i + 7].set(); }
             }
+            settings.button_array[13 + config::display_ghosts].set();
             settings.button_array[config::setbuttons + 11].set();
             settings.text_array[1].update(L"Rozdzielczoœæ", 0);
 
@@ -124,6 +128,12 @@ namespace game {
                 settings.button_array[i + 11].unset();
             }
             settings.button_array[config::setbuttons + 11].set();
+        }
+
+        void toggleGhost(int n) {
+            config::display_ghosts = n;
+            for (int i = 13; i <= 14;i++) { settings.button_array[i].unset(); }
+            settings.button_array[13 + n].set();
         }
 
         void windowEvent() {
@@ -201,7 +211,7 @@ namespace game {
                             if (tetris.field[x][y] > 0) { bloc.setTexture(config::tetriminos[tetris.field[x][y]]); }
                             else {
                                 bloc.setTexture(config::tetriminos[-tetris.field[x][y]]);
-                                bloc.setColor(sf::Color(255, 255, 255, 128)); //displayghosts
+                                bloc.setColor(sf::Color(255, 255, 255, 128 * config::display_ghosts));
                             }
                             bloc.scale(config::scale, config::scale);
                             window.draw(bloc);

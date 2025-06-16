@@ -40,6 +40,7 @@ int main()
             if (mwindow.settings.button_array[6].isPressed(mwindow.window)) { mwindow.reload(); }
             for (int i = 0; i < N_THEMES; i++) { if (mwindow.settings.button_array[i + 7].isPressed(mwindow.window)) { mwindow.change_theme(i); } }
             for (int i = 0; i < N_BUTTONS; i++) { if (mwindow.settings.button_array[i + 11].isPressed(mwindow.window)) { mwindow.change_button_map(i); } }
+            for (int i = 0; i < 2; i++) { if (mwindow.settings.button_array[i + 13].isPressed(mwindow.window)) { mwindow.toggleGhost(i); } }
             if (mwindow.settings.button_array[10].isPressed(mwindow.window)) { conf.save(); }
             mwindow << mwindow.settings;
             break;
