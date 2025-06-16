@@ -31,6 +31,7 @@ int main()
                     mwindow.mode = i;
                 }
             }
+            mwindow.display_leaderboard();
             mwindow << mwindow.menu;
             break;
         case 's':

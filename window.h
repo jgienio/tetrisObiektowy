@@ -42,6 +42,7 @@ namespace game {
             menu.make_btn(35, COL1, 30, "Maraton");
             menu.make_btn(35, COL1, 35, "40 linii");
             menu.make_btn(35, COL1, 40, "2 minuty");
+            menu.make_txt(15, COL2, 30, "");
 
             settings.id = 's';
             settings.make_txt(80, 50, 10, "OPCJE", 'c');
@@ -146,6 +147,13 @@ namespace game {
             settings.button_array[13 + n].set();
         }
 
+        void display_leaderboard() {
+            if (menu.button_array[2].isHovered(window)) { menu.text_array[1].update("Ranking dla maratonu:\n" + points.Lget(0)); }
+            else if (menu.button_array[3].isHovered(window)) { menu.text_array[1].update("Ranking dla 40 linii:\n" + points.Lget(1)); }
+            else if (menu.button_array[4].isHovered(window)) { menu.text_array[1].update("Ranking dla szybkiego trybu:\n" + points.Lget(2)); }
+            else{ menu.text_array[1].update(""); }
+        }
+
         void windowEvent() {
             sf::Event event;
             while (window.pollEvent(event)) {
@@ -194,24 +202,25 @@ namespace game {
         }
 
         void drop(int x) {
-            if (!tetris.drop(&points, &game, x, mode)) { 
+            int dropped = tetris.drop(&points, &game, x, mode);
+            if (!dropped) {
                 defeat.text_array[0].update(L"Przegrana :(");
                 defeat.text_array[1].update(points.get() + L"\nCzas: " + gtime::read(), 0);
-                current_scene = 'l'; 
-            }
-            if (mode == 1 && points.is40()) {
-                defeat.text_array[0].update(L"Wygrana!! :D");
-                defeat.text_array[1].update(points.get() + L"\nCzas: " + gtime::read(), 0);
                 current_scene = 'l';
+                if (mode == 0) { points.Lsave(config::name, gtime::total, mode); }
             }
-            if (mode == 2 && gtime::total <= 0) {
+
+            int win = (mode == 1 && points.is40()) || (mode == 2 && gtime::total <= 0);
+            if (win) {
                 defeat.text_array[0].update(L"Wygrana!! :D");
-                defeat.text_array[1].update(points.get(), 0);
+                auto scoreText = (mode == 1) ? points.get() + L"\nCzas: " + gtime::read() : points.get();
+                defeat.text_array[1].update(scoreText, 0);
                 current_scene = 'l';
+                points.Lsave(config::name, gtime::total, mode);
             }
-            if (!is_soft_dropping) { speedtemp = score_count::speed; }
-            else { speedtemp = score_count::speed * 10; }
+            speedtemp = is_soft_dropping ? score_count::speed * 10 : score_count::speed;
         }
+
 
         void uptime(gtime t) {
             game.text_array[1].update(t.read());
