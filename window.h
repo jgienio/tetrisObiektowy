@@ -9,6 +9,11 @@
 #include "./score.h"
 #include "./gtime.h"
 
+#define COL1 15
+#define COL2 55
+#define FOOT1 15
+#define FOOT2 60
+
 namespace game {
     class win {
     private:
@@ -31,33 +36,37 @@ namespace game {
 
             menu.id = 'm';
             menu.make_txt(80, 50, 10, "TETRIS++v2", 'c');
-            menu.make_btn(35, 15, 75, "Zamknij");
-            menu.make_btn(35, 66, 75, "Opcje");
-            menu.make_btn(35, 15, 30, "Maraton");
-            menu.make_btn(35, 15, 35, "40 linii");
-            menu.make_btn(35, 15, 40, "2 minuty");
+            menu.make_btn(35, FOOT1, 75, "Zamknij");
+            menu.make_btn(35, FOOT2 + 5, 75, "Opcje");
+            menu.make_btn(35, COL1, 30, "Maraton");
+            menu.make_btn(35, COL1, 35, "40 linii");
+            menu.make_btn(35, COL1, 40, "2 minuty");
 
             settings.id = 's';
             settings.make_txt(80, 50, 10, "OPCJE", 'c');
-            settings.make_btn(35, 20, 80, "Menu");
-            settings.make_txt(35, 20, 25, "Rozdzielczosc");
-            settings.make_btn(20, 20, 33, "800x600");
-            settings.make_btn(20, 20, 36, "1280x720");
-            settings.make_btn(20, 20, 39, "1600x900");
-            settings.make_btn(20, 20, 42, "1920x1080");
-            settings.make_btn(20, 20, 45, "2500x1500");
-            settings.make_btn(35, 66, 80, "Zastosuj");
-            settings.make_txt(35, 66, 25, "Motyw");
-            settings.make_btn(20, 66, 33, "Test");
-            settings.make_btn(20, 66, 36, "Mono");
-            settings.make_btn(20, 66, 39, "Retro");
-            settings.make_btn(35, 66, 85, "Zapisz");
-            settings.make_txt(35, 20, 50, "Klawisze");
-            settings.make_btn(20, 20, 58, "Strzalki");
-            settings.make_btn(20, 20, 61, "DFJK");
-            settings.make_txt(35, 66, 45, "Duszki?");
-            settings.make_btn(20, 75, 53, "Nie");
-            settings.make_btn(20, 66, 53, "Tak");
+            settings.make_btn(35, FOOT1, 80, "Menu");
+            settings.make_txt(35, COL1, 25, "Rozdzielczosc");
+            settings.make_btn(20, COL1, 33, "800x600");
+            settings.make_btn(20, COL1, 36, "1280x720");
+            settings.make_btn(20, COL1, 39, "1600x900");
+            settings.make_btn(20, COL1, 42, "1920x1080");
+            settings.make_btn(20, COL1, 45, "2500x1500");
+            settings.make_btn(35, FOOT2, 80, "Zastosuj");
+            settings.make_txt(35, COL2, 25, "Motyw");
+            settings.make_btn(20, COL2, 33, "Test");
+            settings.make_btn(20, COL2, 36, "Mono");
+            settings.make_btn(20, COL2, 39, "Retro");
+            settings.make_btn(35, FOOT2, 85, "Zapisz");
+            settings.make_txt(35, COL1, 50, "Klawisze");
+            settings.make_btn(20, COL1, 58, "Strzalki");
+            settings.make_btn(20, COL1, 61, "DFJK");
+            settings.make_txt(35, COL2, 44, "Duszki?");
+            settings.make_btn(20, COL2 + 12, 52, "Nie");
+            settings.make_btn(20, COL2, 52, "Tak");
+            settings.make_txt(35, COL2, 57, "Nazwa gracza:");
+            settings.make_btn(20, COL2, 65, config::name);
+            settings.make_txt(20, COL2, 65.1, "____________________");
+
             for (int i = 0; i < N_RES; i++) {
                 if (config::get().res[i].isSet) { settings.button_array[i + 1].set(); }
             }
@@ -85,7 +94,7 @@ namespace game {
             defeat.id = 'l';
             defeat.make_txt(80, 50, 10, "Przegrana :(", 'c');
             defeat.make_btn(35, 50, 70, "Menu", 'c');
-            defeat.make_txt(25, 40, 33, "");
+            defeat.make_txt(25, 50, 33, "Czas: 00;00;000", 'c');
             defeat.make_txt(35, 50, 25, "Statystyki", 'c');
 
             current_scene = start;
@@ -158,6 +167,14 @@ namespace game {
                 if (event.type == sf::Event::KeyReleased && current_scene == 'g') {
                     if (event.key.code == config::button_map[config::setbuttons].softDrop) { score_count::speed = speedtemp; }
                 }
+                if (current_scene == 's' && settings.button_array[15].isHovered(window)) {
+                    std::wstring tmp = settings.button_array[15].display().getString();
+                    if (tmp.size() >= 20) { tmp = L""; }
+                    tmp += char(event.text.unicode);
+                    if (tmp == L" ") { tmp = L"####################"; }
+                    if (event.type == sf::Event::TextEntered) { settings.button_array[15].update(tmp, 0); }
+                    config::name = settings.button_array[15].display().getString();
+                }
             }
         }
 
@@ -178,12 +195,12 @@ namespace game {
         void drop(int x) {
             if (!tetris.drop(&points, &game, x, mode)) { 
                 defeat.text_array[0].update(L"Przegrana :(");
-                defeat.text_array[1].update(points.get(), 0);
+                defeat.text_array[1].update(points.get() + L"\nCzas: " + gtime::read(), 0);
                 current_scene = 'l'; 
             }
             if (mode == 1 && points.is40()) {
                 defeat.text_array[0].update(L"Wygrana!! :D");
-                defeat.text_array[1].update(points.get(), 0);
+                defeat.text_array[1].update(points.get() + L"\nCzas: " + gtime::read(), 0);
                 current_scene = 'l';
             }
             if (mode == 2 && gtime::total <= 0) {

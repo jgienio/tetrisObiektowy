@@ -45,6 +45,10 @@ namespace game {
         class savable {
         public:
             int res; int thm; int but; int ghs;
+            char nam[21];
+            void name(std::string name) {
+                for (int i = 0; i < name.c_str()[i]; i++) { nam[i] = name.c_str()[i]; }
+            }
         };
     public:
         static int res_w, res_h;
@@ -62,6 +66,7 @@ namespace game {
         static std::string path;
         static int setbuttons;
         static int display_ghosts;
+        static std::string name;
         savable current;
         void doc() {
             res[0].create(800, 600, 1.f);
@@ -82,7 +87,9 @@ namespace game {
                 sf::Keyboard::L, sf::Keyboard::Space, sf::Keyboard::Escape, sf::Keyboard::S);
             but_set(current.but);
 
-            display_ghosts = current.ghs; //ustaw 1 przy ³adowaniu
+            display_ghosts = current.ghs;
+            name = current.nam;
+            name.pop_back();
 
             bloc_size = SIZE_T * scale;
             shiftX = (res_w - BOARD_W * scale) / 2 + BORDER * scale;
@@ -147,6 +154,7 @@ namespace game {
             for (int i = 0; i < N_THEMES;i++) { if (themes[i].isSet) { current.thm = i; } }
             current.but = setbuttons;
             current.ghs = display_ghosts;
+            current.name(name);
             std::fstream confile("./rsc/conf.bin", std::ios::binary | std::ios::out | std::ios::trunc);
             confile.write((char*)&current, sizeof(savable));
             confile.close();
@@ -170,5 +178,5 @@ namespace game {
     config::buttons config::button_map[]; int config::setbuttons;
     std::string config::path;
     sf::Texture config::tBGR, config::tBoard, config::tetriminos[8];
-    int config::display_ghosts;
+    int config::display_ghosts; std::string config::name;
 };

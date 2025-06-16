@@ -34,7 +34,7 @@ namespace game{
             total = 2 * 60 * 1000;
             direction = -1;
         }
-        std::wstring read() {
+        static std::wstring read() {
             long int ms = total;
             int help = ms % 1000;
             std::wstring out = std::to_wstring(help);
