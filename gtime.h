@@ -8,10 +8,10 @@ namespace game{
     class gtime {
     private:
         sf::Clock dClock;
-        long int total = 0;
         int sync = 0; int direction = 1;
         sf::Time delta;
     public:
+        static long int total;
         void start() {
             delta = dClock.restart();
         }
@@ -26,9 +26,13 @@ namespace game{
             total += delta.asMilliseconds() * direction;
             sync += delta.asMilliseconds();
         }
-        void reset(int d = 1) {
+        void reset() {
             total = 0;
-            direction = d;
+            direction = 1;
+        }
+        void reverse() {
+            total = 2 * 60 * 1000;
+            direction = -1;
         }
         std::wstring read() {
             long int ms = total;
@@ -47,4 +51,5 @@ namespace game{
             return out;
         }
     };
+    long int gtime::total;
 };

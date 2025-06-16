@@ -34,12 +34,17 @@ namespace game {
             return L"Punkty: " + std::to_wstring(x) + L"\nZbite linie: " + std::to_wstring(cleared_total) + L"\nPoziom: " + std::to_wstring(lvl);
         }
 
+        int is40() {
+            if (cleared_total >= 40) { return 1; }
+            return 0;
+        }
+
         void update_score(scene::text* sidebar, char mode = 'e') {
             int add_score = 0;
             cleared_total += lines_cleared;
             add_score += distance;
             int l = lvl;
-            if (mode == 'e') { lvl = cleared_total / 10 + 1; }
+            if (mode == 0) { lvl = cleared_total / 10 + 1; }
             if (l != lvl) { speed *= 2.f / 3.f; }
             std::wstring cleared_display = L"";
             if (lines_cleared == 1) { add_score += 100; cleared_display = L"SINGLE"; }

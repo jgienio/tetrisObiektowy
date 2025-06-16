@@ -280,14 +280,14 @@ namespace game {
 		}
 
 
-		int drop(score_count* score, scene* s, int mult) {
+		int drop(score_count* score, scene* s, int mult, int mode) {
 			if (ghostY == 0) { return 0; }
 			score->distance = mult * (20 - y);
 			insert(bloc, x, ghostY);
 			y = 0;
 			x = 3;
 			score->lines_cleared = basic_check_lines();
-			score->update_score(s->text_array);
+			score->update_score(s->text_array, mode);
 			update_queue();
 			ghost_update();
 			isHold = 0;

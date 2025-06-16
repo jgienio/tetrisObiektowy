@@ -24,6 +24,7 @@ namespace game {
         score_count points;
         int restart = 0;
         float speedtemp = score_count::speed;
+        int mode;
         void make(char start) {
             window.create(sf::VideoMode(config::get().res_w, config::get().res_h), "Tetris Obiektowy");
             window.setFramerateLimit(60);
@@ -32,7 +33,9 @@ namespace game {
             menu.make_txt(80, 50, 10, "TETRIS++v2", 'c');
             menu.make_btn(35, 15, 75, "Zamknij");
             menu.make_btn(35, 66, 75, "Opcje");
-            menu.make_btn(35, 15, 30, "Graj");
+            menu.make_btn(35, 15, 30, "Maraton");
+            menu.make_btn(35, 15, 35, "40 linii");
+            menu.make_btn(35, 15, 40, "2 minuty");
 
             settings.id = 's';
             settings.make_txt(80, 50, 10, "OPCJE", 'c');
@@ -163,9 +166,20 @@ namespace game {
         }
 
         void drop(int x) {
-            if (!tetris.drop(&points, &game, x)) { 
+            if (!tetris.drop(&points, &game, x, mode)) { 
+                defeat.text_array[0].update(L"Przegrana :(");
                 defeat.text_array[1].update(points.get(), 0);
                 current_scene = 'l'; 
+            }
+            if (mode == 1 && points.is40()) {
+                defeat.text_array[0].update(L"Wygrana!! :D");
+                defeat.text_array[1].update(points.get(), 0);
+                current_scene = 'l';
+            }
+            if (mode == 2 && gtime::total <= 0) {
+                defeat.text_array[0].update(L"Wygrana!! :D");
+                defeat.text_array[1].update(points.get(), 0);
+                current_scene = 'l';
             }
             speedtemp = score_count::speed;
         }

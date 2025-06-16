@@ -22,10 +22,14 @@ int main()
             mwindow.windowEvent();
             if (mwindow.menu.button_array[0].isPressed(mwindow.window)) { return 0; }
             if (mwindow.menu.button_array[1].isPressed(mwindow.window)) { mwindow.current_scene = 's'; }
-            if (mwindow.menu.button_array[2].isPressed(mwindow.window)) {
-                time.reset();
-                mwindow.newgame();
-                mwindow.current_scene = 'g';
+            for (int i = 0; i < 3; i++) {
+                if (mwindow.menu.button_array[i + 2].isPressed(mwindow.window)) {
+                    if (i != 2) { time.reset(); }
+                    else { time.reverse(); }
+                    mwindow.newgame();
+                    mwindow.current_scene = 'g';
+                    mwindow.mode = i;
+                }
             }
             mwindow << mwindow.menu;
             break;
