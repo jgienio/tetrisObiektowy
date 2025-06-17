@@ -47,7 +47,9 @@ namespace game {
             int res; int thm; int but; int ghs;
             char nam[21];
             void name(std::string name) {
-                for (int i = 0; i < name.c_str()[i]; i++) { nam[i] = name.c_str()[i]; }
+                int i = 0;
+                for (; i < name.c_str()[i]; i++) { nam[i] = name.c_str()[i]; }
+                for (; i < 21; i++) { nam[i] = '\0'; }
             }
         };
     public:
@@ -89,7 +91,6 @@ namespace game {
 
             display_ghosts = current.ghs;
             name = current.nam;
-            name.pop_back();
 
             bloc_size = SIZE_T * scale;
             shiftX = (res_w - BOARD_W * scale) / 2 + BORDER * scale;
